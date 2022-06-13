@@ -1,0 +1,193 @@
+[JSP02]
+
+1. 내장 객체 Implicit Object
+	: JSP페이지에서 사용할 수 있도록 JSP 컨테이너에 미리 정의 된 객체.
+	import문 없이, 객체 생성없이 바로 사용 가능하다.
+	내장객체는 _jspService() 메서드 내부에 있다.
+
+	1) 종류 
+		requst		: HTTP 요청 정보 저장 : javax.servlet.http.HttpServletRequest
+		response		: HTTP 응답 정보 저장 : javax.servlet.http.HttpServletResponse
+		session		: 웹 브라우저 정보 유지를 위한 세션 정보 저장
+					: javax.servlet.http.HttrpSession
+		out		: 출력할 내용을 담고 있는 출력 스트림 
+					: javax.servlet.jsp.jsp.jspWriter
+		application	: 웹 어플리케이션 컨텍스트 정보 저장
+		pageContext	: JSP 페이지 정보 저장 : javax.servlet.jsp.PageContext
+		page		: JSP 페이지로 구현한 자바 클래스로 JSP페이지 자체를 나타냄.
+					javax.lang.Object
+		config		: JSP 페이지 설정 정보 저장 : javax.servlet.ServletConfig
+		exception		: JSP 페이지 예외 발생 처리 : java.lang.Throwable
+
+2. requset 객체 
+	: 웹 브라우저에서 서버의 JSP 페이지로 전달하는 정보를 저장. (요청관련)
+	
+	1) 기본기능
+		클라이언트 (사용자브라우저)와 관련된 정보 읽기 기능
+		서버와 관련된 정보 읽기 기능
+		클라이언트가 전송한 요청 파라미터 읽기 기능
+		클라이언트가 전송한 요청 헤더 읽기 기능
+		클라이언트가 전송한 쿠키 읽기 기능
+		속성 처리 기능
+
+	2) 요청 파라미터 처리 
+		: 요청 파라미터의 형태는
+			파라미터명 = 값
+			*form 태그라면 name속성값=입력데이터
+		위와 같은 형태로 전송되며,
+		전송된 값을 꺼낼때는 파라미터명을 키값으로 request 객체를 이용해
+		데이터 꺼낼 수 있다.
+
+		# 메서드 
+		리턴타입	메서드명
+		String  	getParameter (String name)		(매우중요) *****
+			: 파라미터명이 name인 값을 리턴해줌. 없으면 null 리턴
+		String[]  	getParameterValues(String name)	(매우중요) ****
+			: 파라미터명이 name인 값들을 배열로 리턴해줌.
+			(파라미터이름이 같은 여러개의 데이터가 넘어왔을 경우
+			해당 파라미터이름을 주고 , 값을 배열로 한번에 가져오기)
+
+		java.util.Enumeration  getParameterNames()
+			: 파라미터명들 목록 구함
+		
+		 *  form 태그에서 
+		get방식은 주소창에 데이터가가 나온다 
+		post방식은 데이터를 숨겨서 보내기때문에 안보인다
+
+	3) 전송방식 : GET / POST
+		웹 브라우저에서 많이 사용하는 파라미터 전송방식 2가지
+		
+		GET : URL 경로뒤에 물음표와 함께 파라미터를 붙혀 전송한다.
+			이를 쿼리스트링이라고 한다.
+			각 파라미터는 파라미터명=값의 형태로 전송되고
+			파라미터가 여러개 일 경우 &(엠퍼샌드)를 구분자로 연결하여 전송한다.
+			브라우저에 따라 한글 get방식으로 전송시
+			주소창에 %..% 이런 형태의 문자로 표현될 경우가 있다.
+			*URL 쿼리 스트링으로 파라미터를 전송하기 떄문에
+			폼을 사용하지 않아도 파라미터 전송
+			브라우저나 웹서버 또는 웹컨테이너에 따라
+			전송할 수 있는 파라미터의 길이 제한이 있을 수 있다.
+
+		POST : URL 경로 뒤에 파라미터가 보이지 않는다.
+			데이터 영역을 이용하여 파라미터를 전송하여,
+			전송할 파라미터의 길이 제한이 없다.
+
+	4) 요청 파라미터 인코딩
+		웹브라우전는 웹 서버에 파라미터를 전송할 때
+		알맞는 캐릭터셋을 이용해서 파라미터 값을 인코딩한다.
+		웹 서버는 알맞은 캐릭터 셋을 이용하여 그것을 디코딩한다
+		-> 인코딩 / 디코딩 / 캐릭터셋이 일치하지 않으면 웹서버는 잘못된 파라미터값 사용함.
+
+		[ 캐릭터 셋 세팅 ]
+		
+		# client <-----Server :   <@ page 인코딩 UTF-8" %> (브라우저에 UTF-8로 뿌린다...)
+		# client<-----Server  : 다른곳에서 처리
+
+			* POST 방식 (pro 페이지마다 작성)
+				request에서 파라미터를 꺼내기 전에 한번!
+				request.setCharacterEncoding("UTF-8"); 코드 작성!!
+
+			* GET 방식 (서버에 한번만 셋팅하면 됨)
+				Servers > Tomcat..... > server.xml > 63line < Connector.... 태그에
+
+				<Connector URIEncoding="UTF-8" connectionTimeout="20000" port="8080" 
+					   ------------------------
+						추가
+					또는 useBodyEncodingForURI="UTF-8"
+
+				>> 서버 재부팅해서 적용!
+
+3. response 내장 객체
+	: request와 반대기능. 사용자의 요청을 처리한 결과를 웹브라우저로 전달하는 정보 저장.
+		
+	1) 기능
+		리다이렉트 하기 (페이지 이동)
+		헤더 정보 입력
+	
+	2) 리다이렉트
+		다른 페이지로 강제 이동하도록 response 객체의 리다이렉션 메서드 제공
+		리턴타입	메서드명
+		void 	sendRedirect(String url);		(중요) ***
+
+4. out 내장 객체
+	
+	: 웹 브라우저에 데이터를 전송하는 출력 스트림 객체
+	<%= %> 스크립트 출력문으로 브라우저에 출력하는것과 같은 기능
+
+	리턴타입	메서드명
+	void 	print(String str)
+	void 	println(String str) 	: 줄바꿈 적용X
+	void 	newLine()
+	
+5. application 내장 객체
+	: 어플리케이션과 관련된 기본 객체
+	특정 웹 어플리케이션에 포함된 모든 JSP 페이지는 
+	하나의 application 내부객체를 공유한다.
+	초기 설정 정보 읽기, 서버 정보 읽기, 웹 어플리캐이션이 제공하는 자원읽기.....
+
+	1)  웹 어플리케이션 초기화 파라미터 읽기
+
+		웹 어플리케이션  전체에 사용할 수 있는 
+		초기화 파라미터는 WEB-INF/web.xml 파일에 
+		<context-param> 태그를 사용하여 추가한다.
+
+		* web.xml 
+			웹 어플리케이션을 위한 설정 정보를 담고 있는 파일.
+			WEB-INF 폴더 안에 위치해야함.
+
+		web.xml에 초기화 파라미터를 추가하면,
+		JSP에서는 application 내부 객체의 메서드를 통해
+		초기화 파라미터를 꺼내서 사용할 수 있다.
+				
+		* 초기화 파라미터 읽는 메서드
+			String	getInitParameter(String name)
+					: 이름이 name인 초기화 파라미터의 값을 문자열로 리턴
+					해당값이 없으면 null 리턴
+			Enumeration<String> getInitParameterNames()
+					: 초기화 파라미터 이름 목록 리턴
+
+		언제 사용?
+			이름그대로 웹어플리케이션 초기화에 필요한 설정정보를 저장하려고 사용
+
+	
+6. 에러 페이지 세팅
+	
+	웹 어플리케이션 실행도중에 발생할 수 있는 오류에 대비한
+	예외 처리 코드를 작성하여 비정상적인 종료를 막기 위한 세팅
+		
+	1) 웹 에러
+		개발자의 실수로 일어날 수 있는 웹 에러 두가지
+		404 : Not Found Error : 요청경로 오류, 잘못된 url로 요청
+		500 : Internal Server Error : 요청 페이지의 로직 오류 (자바 문법 오류)
+
+		그 외 HTTP 상태코드
+		[2xx] Success 성공 관련 코드들
+		200 : 성공 : 서버가 요청한 페이지를 잘 처리 제공했다.
+		201 : created : 서버에 요청한대로 데이터가 생성되어 성공적으로 제공되었다.
+		[3xx] Redirection 이동관련 코드 
+		[4xx] Client Error 관련 코드
+		400 : Bad Request : 요청이 이상함.
+		405 : Method Not Allowed : 요청해 실행되어야할 메서드가 안된다.- 허용되지 않음.
+		[5xx] Server Error 관련 코드
+		503 : Service Unavailable : 서비스 지원불가
+
+	2) 예외 처리 방법
+		- try/catch/finally 를 이용	: 자바언어에서 예외처리 구문 이용
+		- page 디렉티브태그를 이용한 예외처리 : errorPage="error.jsp"    isErrorPage="true" 
+		- web.xml 에 예외처리 : <error-page>태그와 하위태그 이용
+
+		* 동시 적용시 예외 처리 우선 순위
+		1. try/catch/fanally
+		2. page 디렉티브 태그
+		3.web.xml
+		4. 위 항목에 해당안되면 웹서버에서 제공하는 기본 오류페이지 출력
+
+	3) web.xml 에 예외처리
+		<error-page>
+			<error-code>......</error-code> 또는 <exception-type>.....</exception-type>
+			<location>.....</location>
+		</error-page>
+
+		error-code : 오류 코드 설정
+		exception-type : 자바 예외 유형의 클래스 이름 설정
+		location : 에러페이지의 URL 설정

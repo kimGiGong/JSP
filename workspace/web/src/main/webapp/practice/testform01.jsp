@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>계정만들기</h2>
-	<form action="testresponse01.jsp" method="get">
+	<form action="testresponse01.jsp" method="post">
 		<fieldset>
 		<legend> 회원가입 </legend>
 			<table>

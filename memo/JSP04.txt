@@ -1,0 +1,154 @@
+[JSP04]	
+
+1. JDBC : Java DataBase Connectivity
+
+	자바 /JSP에서 데이터베이스 프로그래밍을 할 때 JDBC API를 사용한다.
+	자바를 이용해서 DB 연결하는 것.
+	관계형 데이터베이스 시스템에 접근하여 SQL문을 실행하기위한 API로,
+	DBMS의 종류에 상관없이 동일한 방법으로 데이터베이스 작업을 처리할 수 있다.
+	DBMS에 알맞는 JDBC 드라이버가 필요하며, 
+	각 DBMS는 자신에게 맞는 JDBC 드라이버를 제공하고 있다.
+
+	자바 어플리케이션 ---> JDBC API ---> 오라클드라이버 ---> 오라클 드라이버 <---> 오라클 데이터베이스
+				  		       ---> MSSQL	          <--->  MSSQL 데이터베이스
+						       ---> MySQL	          <--->  MySQL 데이터베이스
+
+	1) 드라이버 준비
+		* 오라클 공식사이트 > JDBC 드라이버
+		https://www.oracle.com/kr/database/technologies/appdev/jdbc-downloads.html
+
+		* 메이븐 리포지토리 (라이브러리 모아둔 사이트)
+		MVN Repository > ojdbc8 검색 > 19.3.xx > jar 버튼 눌러서 다운받기
+
+	2) 드라이버 배치
+		다운받은 ojdbc8.jar 파일(압축해제하지 않은 상태)을
+		WEB-INF > lib 폴더안에 복사해 넣기
+		확인 : 프로젝트폴더 우클릭 > Properties > 왼쪽 JavaBuildPath 선택
+		> Libraries탭 >Class Path > 프로젝트명 App Libraries 안에 ojdbc8.jar 가 있는지 확인 
+		
+	3) JDBC로 JSP와 데이터베이스 연동
+		1 : JDBC 드라이버 로딩
+		2 : DB접속을 위한 Connection 객체 생성
+		3 : 쿼리 실행을 위한 Statement 객체 생성, 쿼리문 작성
+		4 : 쿼리 실행
+		5 : 가져오는 결과물이 있으면 사용
+		6 : 사용된 객체(ResultSet, Statement, Connection 등) 종료
+		
+	4) JDBC 드라이버 로딩과 사용
+		
+		JDBC API는 java.sql 패키지에 의해 구현된다.
+
+		* java.sql.DriverManager 클래스의 getConnection() 메서드를 사용하여
+			java.sql.Connection 객체를 얻어옴.
+		
+			Connection getConnection(String jdbcURL, String user, String password)		
+
+			- jdbcURL : 데이터베이스 식별을 위한 jdbc url로 
+				오라클에서 제공하는 JDBC 드라이버는 아래와 같은 형식으로 사용함.
+				jdbc:oracle:thin:@ip : port : sid
+				ip = 오라클 DB가 설치된 DB서버의 ip주소
+				port = 1521 : 오라클에서 디폴트로 세팅해놓은 port번호
+				sid = service id로 db 설치시 자동으로 지정
+
+		* 쿼리문 실행을 위한 Statement 객체 생성
+			
+			- 쿼리 실행 객체 3가지
+			Statement		: 정적 쿼리에 적용. 하나의 쿼리 실행후 바로 close로 해제필요
+			PreparedStratement	: 동적 쿼리에 적용. Statement의 단점을 보완. 하나의 객체로
+						여러번 쿼리 실행할 수 있음.
+			CallableStatement	: 사용안함.
+
+
+		* PreparedStatement 객체로 쿼리 실행
+			- 메서드
+			ResultSet		executeQuery()	: SELECT 문 실행할때 사용
+			int		executeUpdate()	: INSERT, UPDATE, DELETE문 실행할때 사용
+			void		close()		: PreparedStatement 객체 반환. 자원해제.
+
+		* 쿼리 실행후 돌려받은 결과물 추출/사용
+			executeQuery() 메서드를 통해 SELECT문 실행시, 
+			ResultSet 타입으로 결과물을 돌려준다.
+			레코드 값을 테이블 형태로 가진 객체로 반환되어
+			레코드 단위로 결과를 추출하여 활용한다.
+
+			- ResultSet 메서드
+			boolean 		next()		: 다음행에 값이 존재하면 true 리턴하며,
+							커서를 다음행으로 이동
+			Xxx		getXxx(int columnIndex)
+					: 컬럼인덱스(1~)번호를 주면서 하나의 컬럼에 저장된 값을 추출
+					Xxx : String, Int, Array, Timesatmp 등등 다양한 타입이 존재
+			Xxx 		getXxx(String columnName)
+					: DB테이블의 컬럼명을 주면서 하나의 값 추출
+			void		close()	: rs 해제
+
+2. 연결 지향성, 비연결지향성
+	연결지향성
+	비연결 지향성
+
+	1) 커넥션 풀 Connection pool
+		: 앞서 DB작업이 필요할때 커넥션을 생성해서 사용함
+		-> JSP페이지 실행할때 마다 커넥션 생성하고 닫는데 시간이 소모가 되어
+		동시접속자가 많은 웹사이트는 전체 성능 저하, 동시접속자 수를 벗어나면
+		에러 발생하는 등 불편함이 있다.
+		이를 해결하기 위한 방법이 커넥션 풀 기법을 사용하는 것이다.
+
+		데이터베이스와 연결된 커넥션을 미리 만들어 풀(pool) 에 저장해두고
+		필요할때 커넥션을 풀에서 가져다 쓰고 다시 반환하는 기법을 말함.
+	
+	2) 준비사항
+
+		- ojdbc.jar	(오라클 db 연결시 필요한 라이브러리 , lib 폴더에 배치)
+		- tomcat-dbcp.jar	(커넥션 풀에 필요한 라이브러리 , 이미 톰캣에 들어있음)
+		- context.xml 커넥션이  필요한 resource 기술
+		- DAO (Data Access Object) : DB 관련 처리를 전담하는 클래스 (우리가 직접 작성)
+
+		* 자바빈즈
+		DTO / VO : Data *Transfer* Object / Value Object : 데이터를 담아서 이동시키는 용도
+		DAO : Data *Access* Object  : DB와 관련
+		 
+		Servers >Tomcat>context.xml > 주석 밑에 <Resource/> 태그 안에 속성입력
+
+	3) DAO
+		데이터베이스에 접속해서 데이터 추가, 삭제, 수정 등의 작업을 위해
+		사용하는 클래스.
+
+		DB 커넥션 관련 메서드, DB에서 처리하는 insert, select, update, delete 등의
+		쿼리를 실행해주는 메서드 등을 각 상황에 맞게 작성해두고 사용.
+		
+	** Context.xml > DTO > DAO > list.jsp 순
+
+		
+DB 설치 
+관리자계정 : system
+비밀번호 : 설치시 지정한 번호
+(로그인해보기)
+		
+사용자 계정하나 만들기 (system으로 로그인한 상태에서 생성)
+
+--계정생성시 계정명 앞에 ## 붙히는거 안하기 위한 설정 명령문
+alter session set "_ORACLE_SCRIPT"=true; (한번 실행)
+
+-- 계정 생성
+create user 사용자계정명 identified by 비밀번호;
+ex) create user java01 identified by java01;
+
+-- 권한 부여
+grant 권한명, 권한명, .... to 사용자계정명;
+ex) grant connect, resource, dba to java01;
+
+-- 확인 : 새로만든 사용자계정으로 로그인해서 테이블 생성까지 해보기.
+--	테이블 생성시 ORA-01950 테이블스페이스 .... 이런 오류 발생시,
+--  테이블 스페이스 권한 주기 명령실행
+alter user 사용자계정명 defualt tablespace users quota unlimited on users;
+
+MVC 패턴
+	Model 	: 비니스 로직처리 (dao)
+	View 	: 화면에 보여주기 html, css, js
+	Controller	: model과 view를 전체적으로 제어해주는
+
+[ 실습 ]
+1. 연습용 프로젝트에 똑같이 처음부터 만들어보기
+	- DB 테이블명 다르게 생성
+	- DAO, DTO 새로 작성
+	- SignupForm, SignupPro,jsp 새로 작성
+	- List.jsp 새로 작성

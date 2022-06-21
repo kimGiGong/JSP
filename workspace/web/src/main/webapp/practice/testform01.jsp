@@ -5,15 +5,22 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<style type="text/css">
+		form,fieldset {
+			display: inline;
+			width: 400px;
+			height: 320px;
+		}
+	</style>
 </head>
 <body>
 	<h2>계정만들기</h2>
 	<form action="testresponse01.jsp" method="post">
 		<fieldset>
-		<legend> 회원가입 </legend>
+			<legend> 회원가입 </legend>
 			<table>
 				<tr>
-					<td>성</td>
+					<td >성</td>
 					<td>이름</td>
 				</tr>
 				<tr>

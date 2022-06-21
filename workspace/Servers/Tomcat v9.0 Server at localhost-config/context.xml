@@ -26,4 +26,19 @@
     <!--
     <Manager pathname="" />
     -->
+    
+    <Resource
+    		name= "jdbc/orcl"
+    		auth="Container"
+    		type="javax.sql.DataSource"
+    		driverClassName= "oracle.jdbc.driver.OracleDriver"
+    		username="java04"
+    		password="java04"
+    		loginTimeout="10"
+    		maxWait="5000"
+    		maxActive="20"
+    		testOnBorrow="true"
+    		url="jdbc:oracle:thin:@192.168.100.250:1521:ORCL"
+    />
+    
 </Context>

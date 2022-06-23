@@ -1,0 +1,15 @@
+[JSP07]
+
+1. 회원가입
+		
+	#1. 회원가입 form, pro
+	#2. DB table
+	#1. DAO, DTO
+	#1. main 페이지
+	#1. 로그인 form, pro
+	#1. 마이페이지
+	#1. 회원 정보 수정 form, pro
+	#1. 회원 탈퇴 form, pro
+
+	jsp07 폴더 	: jsp, css, img
+	web.jsp07.model	: .java

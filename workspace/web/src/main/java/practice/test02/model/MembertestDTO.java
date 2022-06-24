@@ -1,5 +1,7 @@
 package practice.test02.model;
 
+import java.sql.Timestamp;
+
 public class MembertestDTO {
 	private String id;
 	private String pw;
@@ -11,6 +13,7 @@ public class MembertestDTO {
 	private String gender;
 	private String email;
 	private String tel;
+	private Timestamp since;
 	
 	
 	public String getId() {
@@ -34,6 +37,13 @@ public class MembertestDTO {
 	public String getBirth() {
 		birth = birthyear+"-"+birthmonth+"-"+birthday;
 		return birth;
+	}
+	public String setBirth(String birthday, String birthmonth , String birthyear) {
+		birth = birthyear+"-"+birthmonth+"-"+birthday;
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
 	public void setBirthday(String birthday) {
 		this.birthday=birthday;
@@ -62,4 +72,12 @@ public class MembertestDTO {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
+	public Timestamp getSince() {
+		return since;
+	}
+	public void setSince(Timestamp since) {
+		this.since = since;
+	}
+	
+	
 }

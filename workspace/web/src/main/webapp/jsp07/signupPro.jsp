@@ -7,7 +7,12 @@
 <meta charset="UTF-8">
 <title>signupPro.jsp</title>
 </head>
-
+<%	if(session.getAttribute("memId") != null){	%>
+			<script type="text/javascript">
+				alert("이미 로그인된 상태입니다...");
+				window.location.href = "main.jsp";
+			</script>	
+		<%	}else{ %>
 <% request.setCharacterEncoding("UTF-8");	//인코딩 처리 %>
 
 <jsp:useBean id="dto" class="web.jsp07.model.MemberDTO" /> <%-- dto 객체생성 --%>
@@ -24,4 +29,5 @@
 	
 	
 </body>
+<% } %>
 </html>

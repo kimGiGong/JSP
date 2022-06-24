@@ -7,7 +7,12 @@
 	<meta charset="UTF-8">
 	<title>loginPro.jsp</title>
 </head>
-<%
+	<%	if(session.getAttribute("memId") != null){	%>
+			<script type="text/javascript">
+			alert("로그인 상태 입니다.");
+			window.location.href = "main.jsp";
+			</script>	
+	<%	}else{ 	
 	// loginForm -> Pro (파라미터 들고옴)
 	// main -> 쿠키있다고 pro (파라미터 X)
 	
@@ -38,9 +43,9 @@
 			Cookie c1 = new Cookie("autoId",id);
 			Cookie c2 = new Cookie("autoPw",pw);
 			Cookie c3 = new Cookie("autoCh",auto);
-			c1.setMaxAge(60*60*24); // 24시간
-			c2.setMaxAge(60*60*24); 
-			c3.setMaxAge(60*60*24);
+			c1.setMaxAge(60*60); // 24시간
+			c2.setMaxAge(60*60); 
+			c3.setMaxAge(60*60);
 			response.addCookie(c1);
 			response.addCookie(c2);
 			response.addCookie(c3);
@@ -54,9 +59,9 @@
 			
 			//	history.go(-1);
 		</script>
-<%	}
-%>
+<%	}%>
 <body>
 
 </body>
+<%} %>
 </html>

@@ -6,6 +6,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+		<%	if(session.getAttribute("memId") == null){	%>
+			<script type="text/javascript">
+				alert("로그인 상태가 아닙니다.");
+				window.location.href = "loginForm.jsp";
+			</script>	
+		<%	}else{ %>
 <%
 	// 로그아웃처리
 	session.invalidate();
@@ -26,4 +32,5 @@
 <body>
 
 </body>
+<% } %>
 </html>

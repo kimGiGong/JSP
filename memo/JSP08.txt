@@ -1,0 +1,47 @@
+[JSP08]
+
+1. 게시판 
+		
+	1) 필요 요소 
+		#1. DB테이블 board, sequece로 게시판 글 고유번호 board_seq
+		#2. DAO, DTO
+		#3. 글작성 페이지 writeForm, writePro
+		#4. 목록페이지 list
+		#5. 글 본문 페이지 content	( 댓글 )
+		#6. 글 수정 페이지 modifyForm, modifyPro
+		#7. 글 삭제 페이지 deleteForm, deletePro
+
+		패키지 : web.jsp08.model
+		jsp폴더 : jsp08
+
+	2) Oracle rownum
+		rownum 은 오라클이 제공하는 가상 컬럼으로
+		쿼리 결과에 1부터 1씩 증가하는 숫자로 이루어진 컬럼.
+		주로 여러개의 결과를 뽑아오는 쿼리문을 실행 후 결과의 개수를
+		제한하여 가져오는데 사용.
+
+	
+#2	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+	---- DAO ------
+	insert(DTO)
+	void insert = setString(DTO)
+	getAllArticles()
+	list<BoardDTO> getAllArticles() 
+	= rs = query() -> DTO 객체생성 -> rs.next -> dto.set( resultset . getString("변수명"))
+	
+
+#3	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+	---- FORM ------
+	submit , 취소 버튼 필수!
+
+	---- PRO --------
+	setChar UTF-8
+	저장할 객체 생성
+	받은데이터 저장
+	
+	DAO 저장데이터 넣고
+	결과 받기
+
+	날릴 페이지 설정

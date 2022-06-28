@@ -1,4 +1,4 @@
-<%@page import="java.text.SimpleDateFormat"%>
+ <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="web.jsp08.model.BoardDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="web.jsp08.model.BoardDAO"%>
@@ -81,7 +81,7 @@
 						href에는 content.jsp 와 클릭한 글의 DB상 글 고유번호 파라미터로 전달
 						content.jsp에서는 넘어온 글 고유번호를 받아서 DB접근해
 						해당 글 하나만 가져와 화면에 뿌려준다. --%>
-					<td> <a href="content.jsp?num=<%= article.getNum() %>"> <%= article.getSubject() %> </a> </td>	<%-- 글제목에 하이퍼링크 --%>
+					<td> <a href="content.jsp?num=<%=article.getNum() %>"> <%= article.getSubject() %> </a> </td>	<%-- 글제목에 하이퍼링크 --%>
 					<td> <a href="mailto:<%= article.getEmail() %>"> <%= article.getWriter() %> </a> </td>
 					<td><%= sdf.format(article.getReg())  %></td>
 					<td><%= article.getReadcount() %></td>

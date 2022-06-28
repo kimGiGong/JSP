@@ -181,12 +181,103 @@ public class BoardDAO {
 	}
 	
 	
+	// 조회수 올려주는 메서드 
+	public void updateReadcount(int num) {
+		Connection conn =null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "update board set readcount=readcount+1 where num=?"; 
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			int result = pstmt.executeUpdate();
+			System.out.println("update readcount ="+result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt != null) try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+			if(conn != null) try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+	}
 	
 	
+	public int updateArticle(BoardDTO article) {
+		int result = -1;
+		String dbpw = "";
+		Connection conn= null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;  
+		try {
+			conn = getConnection();
+			//	비밀번호 맞는지 체크하고,
+			String sql = "select pw from board where num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, article.getNum());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dbpw = rs.getString("pw");
+				if(dbpw.equals(article.getPw())) {	// db상의 pw와 사용자가 입력한 pw가 같은지
+					//	맞으면 update!
+					sql = "update board set subject=?, writer=?, content=?, email=? where num=?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, article.getSubject());
+					pstmt.setString(2, article.getWriter());
+					pstmt.setString(3, article.getContent());
+					pstmt.setString(4, article.getEmail());
+					pstmt.setInt(5, article.getNum());
+					result = pstmt.executeUpdate();	//	1개 레코드가 잘 수정되면 1리턴됨
+				}else {	//	비번 불일치
+					result=0;
+				}
+			}
+			System.out.println("update처리="+result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null) try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			if(pstmt != null) try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+			if(conn != null) try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+		return result;
+	}
 	
-	
-	
-	
+	public int deleteArticle(int num, String pw) {
+		int result = -1;
+		String dbpw = "";
+		Connection conn= null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;  
+		try {	
+			conn = getConnection();
+			//	비밀번호 맞는지 체크하고,
+			String sql = "select pw from board where num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			System.out.println("num = "+num);
+			System.out.println("pw = "+pw);
+			if(rs.next()) {
+				dbpw = rs.getString("pw");
+				if(dbpw.equals(pw)) {	// db상의 pw와 사용자가 입력한 pw가 같은지
+					//	맞으면 delete!
+					sql = "delete from board where num=?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, num);
+					result = pstmt.executeUpdate();	//	1개 레코드가 잘 수정되면 1리턴됨
+				}else {	//	비번 불일치
+					result=0;
+				}
+			}
+			System.out.println("delete처리="+result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null) try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			if(pstmt != null) try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+			if(conn != null) try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+	return result;
+	}
 	
 	
 	

@@ -95,7 +95,7 @@ public class BoardDAO {
 	
 	
 	
-	
+	// 카운트
 	public int countList() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -122,17 +122,86 @@ public class BoardDAO {
 	
 	
 	
+	//	contentOut
+	public BoardDTO contentOut(int boardno) {
+		BoardDTO dto = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			String sql = "select * from tboard where boardno=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1 , boardno);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto = new BoardDTO();
+				dto.setBoardno(boardno);
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setPw(rs.getString("pw"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setReg(rs.getTimestamp("reg"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null)try {rs.close();} catch (Exception e) {e.printStackTrace();}
+			if(pstmt != null)try {conn.close();} catch (Exception e) {e.printStackTrace();}
+			if(conn != null)try {conn.close();} catch (Exception e) {e.printStackTrace();}
+		}
+		return dto;
+	}
 	
 	
 	
 	
+	//	1개 게시물 DB 업데이트하는 set메서드
+	public int reContentIn(int boardno,String subject, String Content , String pw) {
+		int pwOK= 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "update tboard set subject=? ,content=? where boardno=? and pw=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1 , subject);
+			pstmt.setString(2 , Content);
+			pstmt.setInt(3 , boardno);
+			pstmt.setString(4 ,pw);
+			pwOK = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt != null)try {conn.close();} catch (Exception e) {e.printStackTrace();}
+			if(conn != null)try {conn.close();} catch (Exception e) {e.printStackTrace();}
+		}
+		return pwOK;
+	}
 	
 	
 	
-	
-	
-	
-	
+//	1개 게시물 DB 삭제하는 delete메서드
+	public int deleteOne(int boardno, String pw) {
+		int deleteOK= 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "delete from tboard where boardno=? and pw=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1 , boardno);
+			pstmt.setString(2 ,pw);
+			deleteOK = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt != null)try {conn.close();} catch (Exception e) {e.printStackTrace();}
+			if(conn != null)try {conn.close();} catch (Exception e) {e.printStackTrace();}
+		}
+		return deleteOK;
+	}
 	
 	
 	

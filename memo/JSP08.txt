@@ -20,7 +20,29 @@
 		주로 여러개의 결과를 뽑아오는 쿼리문을 실행 후 결과의 개수를
 		제한하여 가져오는데 사용.
 
+	3) 댓글
+		content.jsp 하단에 작성
+			- 댓글 목록
+			- 댓글 form
+		reply.jsp : 댓글 등록처리
+		replyModify : 댓글 수정 폼
+		replyModifyPro : 댓글 수정처리
+		replydeletePro.jsp	: 댓글 삭제 처리
+		
+		DB 테이블 : replyBoard
+			- rnum 댓글 고유 번호 : seq
+			- reply 댓글 내용
+			- replyer 댓글 작성자
+			- reReg 댓글 작성시간	
+			- boardNum 댓글이 달린 본문의 고유번호
+					(board테이블의 num 값 )
+			-ref		: 댓글 그룹 (오리지널댓글의 번호)
+			-replyLeve	: 들여쓰기
+			- replyStep	: 댓글 순서
+
+		댓글용 시퀀스 : reply_seq
 	
+		board.num == replyBoard.boardNum
 #2	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 	---- DAO ------

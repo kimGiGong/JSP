@@ -12,24 +12,29 @@
 </head>
 <% 
 	request.setCharacterEncoding("UTF-8");
+	int pageno;
+	try{pageno = Integer.parseInt(request.getParameter("pageno"));
+	}catch(NumberFormatException e){pageno = 1;}
+	
+	
+	
 
 	BoardDAO dao = new BoardDAO();
 	int listAll = dao.countList(); 
 	
-	//	list 
-	String pagenow = request.getParameter("page");
-	if(pagenow==null){pagenow="1";}
-	int listnow = Integer.parseInt(pagenow);
+	
+	//	list 카운트
+	
 	int listMax = 5;
-	int flist = listMax*(listnow-1)+1;
-	int llist = listMax*listnow;
-	int listcount = listAll-(listMax*(listnow-1));
+	int flist = listMax*(pageno-1)+1;
+	int llist = listMax*pageno;
+	int listcount = listAll-(listMax*(pageno-1));
 	System.out.println(listcount);
 	List<BoardDTO> list = dao.readAllBorad(flist,llist);
 	
-	// page
+	// page 카운트
 	int pageMax = 5;
-	int pageStart = (int)pageMax*((listnow-1)/pageMax)+1;
+	int pageStart = (int)pageMax*((pageno-1)/pageMax)+1;
 	int pageEnd= pageMax+pageStart-1;
 	int pageCount = listAll/listMax+(listcount%listMax == 0? 0 : 1);
 	System.out.println(pageCount);
@@ -55,7 +60,7 @@
 	<tr>
 		<td><%= listcount-- %></td>
 		<td> 
-			<a href="window.location='content?no=<%= article.getBoardno()%>'"> 
+			<a href="content.jsp?boardno=<%= article.getBoardno()%>"> 
 			<%= article.getSubject() %> </a> 
 		</td>
 		<td><%= article.getWriter() %></td>
@@ -66,10 +71,10 @@
 </table >
 <div align="center" >
 	<tr>
-		<% for(int i = pageStart ; i<=pageEnd ;i++) {%>
+		<% for( pageno = pageStart ; pageno<=pageEnd ;pageno++) {%>
 		<td>
 			<div style="display :inline; margin: 4px; "> 
-				<a style="color: black;" href="listAll.jsp?page=<%=i%>"><%=i%></a>
+				<a style="color: black;" href="listAll.jsp?pageno=<%=pageno%>"><%=pageno%></a>
 			</div>
 		</td>
 		<%} %>

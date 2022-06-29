@@ -9,7 +9,7 @@
 </head>
 <%
 	request.setCharacterEncoding("UTF-8");
-
+	String pageNum=request.getParameter("pageNum");
 	int num = Integer.parseInt(request.getParameter("num"));
 	String pw = request.getParameter("pw");
 	
@@ -18,7 +18,7 @@
 	int result = dao.deleteArticle(num,pw);
 	System.out.println("jsp d result : "+ result);
 	if(result == 1){
-		response.sendRedirect("list.jsp");
+		response.sendRedirect("list.jsp?pageNum="+pageNum);
 	}else{%>
 		<script type="text/javascript">
 			alert("비밀번호가 맞지 않습니다.");

@@ -10,6 +10,7 @@
 	<link href="style02.css" rel="stylesheet" type="text/css" />	
 </head>
 <%
+	String pageNum=request.getParameter("pageNum");
 	//	content.jsp 를 통해 현재페이지로 이동해왔고, 이때 글 고유번호 파라미터로 가져옴
 	int num = Integer.parseInt(request.getParameter("num"));
 	BoardDAO dao = new BoardDAO();
@@ -18,7 +19,7 @@
 <body>
 	<br>
 	<h1 align="center"> Modify Article</h1>
-	<form action="modifyPro.jsp" method="post">
+	<form action="modifyPro.jsp?pageNum=<%=pageNum%>" method="post">
 		<%-- 글 고유번호 숨겨서 보내기 --%>
 		<input type="hidden" name="num" value="<%= num %>">
 		<table>
@@ -46,7 +47,7 @@
 				<td colspan="2"> 
 					<input type="submit" value="수정" />	<%-- form에서 이벤트 등록되어있어 onclick 사용하지 않음 --%> 
 					<input type="reset" value="재작성" /> 
-					<input type="button" value="취소" onclick="window.location = 'content.jsp'"/> 
+					<input type="button" value="취소" onclick="window.location = 'content.jsp?pageNum=<%=pageNum%>&num=<%=num%>'"/> 
 				</td>
 			</tr>
 		</table>

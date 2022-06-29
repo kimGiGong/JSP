@@ -7,11 +7,13 @@
 	<title>Insert title here</title>
 	<link href="style02.css" rel="stylesheet" type="text/css" />
 </head>
-<% int num = Integer.parseInt(request.getParameter("num")); %>
+
+<% int num = Integer.parseInt(request.getParameter("num")); 
+	String pageNum=request.getParameter("pageNum");%>
 <body>
 	<br> 
 	<h1 align="center"> Delete Form </h1>
-	<form action="deletePro.jsp" method="post">
+	<form action="deletePro.jsp?pageNum=<%=pageNum%>" method="post">
 		<%-- 글 고유번호 숨겨서 넘기기 --%>
 		<input type="hidden" name="num" value="<%=num%>">
 		<table>

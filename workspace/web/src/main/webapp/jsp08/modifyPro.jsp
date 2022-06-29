@@ -10,7 +10,9 @@
 <body>
 <%
 	request.setCharacterEncoding("UTF-8");
-%>
+	String pageNum=request.getParameter("pageNum");	//	BoardDTO에 없는 변수 직접 가져오기
+	
+%>	
 <jsp:useBean id="article" class="web.jsp08.model.BoardDTO"></jsp:useBean>
 <jsp:setProperty property="*" name="article"/>
 
@@ -20,7 +22,7 @@
 	int result = dao.updateArticle(article);	// 수정처리(pw맞는지) 결과 돌려받기
 	//	1=수정잘됨, 0 = 비번틀림 , -1= 가능성없게
 	if(result ==1){
-		String uri = "content.jsp?num="+ article.getNum();
+		String uri = "content.jsp?num="+ article.getNum()+"&pageNum="+pageNum;
 		response.sendRedirect(uri);
 	}else{ %>
 		<script type="text/javascript">

@@ -44,6 +44,9 @@
 			</div>
 		</td>
 	</tr>
+	<tr>
+		<td colspan="4"> <button onclick="comment.jsp?boardno=<%=boardno%>">댓글쓰기</button> </td>
+	</tr>
 </table >
 </body>
 </html>

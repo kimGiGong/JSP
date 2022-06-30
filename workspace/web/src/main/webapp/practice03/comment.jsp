@@ -11,6 +11,19 @@
 	String boardno = request.getParameter("boardno");
 %>
 <body>
-
+	<form action="" method="post">
+		<table>
+			<tr>
+				<td> <textarea rows="40" cols="20" name="comment"></textarea> </td>			
+			</tr>
+			<tr>
+				<td></td>			
+			</tr>
+			<tr>
+				<td></td>			
+				<td></td>			
+			</tr>
+		</table>
+	</form>
 </body>
 </html>

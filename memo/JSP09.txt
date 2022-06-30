@@ -1,0 +1,63 @@
+[JSP09]
+
+1. 파일 업로드 file upload
+	: 웹 브라우저에서 서버로 파일을 전송하여, 서버에 저장하는 것
+	
+	* 파일 업로드	: 개발자가 구현
+	* 파일 다운로드	: 웹 브라우저의 서비스
+
+	1) 파일 전송 방식
+		일반 파라미터 / 파일 업로드 두가지	전송 인코딩이 다름
+	
+		# HTTP 데이터 전송방식
+		GET	: URL 주소로 전송 : 문자형태로, 주소창에 전송 데이터가 보임
+		POST 	: 요청 몸체 데이터로 전송 : URL에 전송데이터가 보이지 않음.
+			: 스트림 기반 POST 방식은 인코딩 방식에 따라 전송데이터 형식이 달라짐.
+			: 파일 업로드 시 POST 방식만 가능함.
+
+		# 인코딩 방식
+		application / x-www-form-urlencoded  : 지금까지 해온 form 태그로 전송한 예제에서
+						 사용된 인코딩 (default)
+		multipart / form-data		: 파일 업로드시 사용할 전송 인코딩
+
+	2) 파일 업로드시 form태그 
+		1#. <form> 태그에 method="post"
+		2#. <form> 태그에 enctype="multipart/form-data" 속성추가
+		3#. <input> 태그에 type="file"
+
+	3) 파일 업로드 처리방법
+		웹브라우저 ---> 서버로 파일 업로드
+		서버는 요청 파라미터 분석하여 파일 찾고,
+		서버의 자원(파일저장폴더)에 저장하는 과정을 거침
+		이런 처리는 오픈라이브러리를 통해 사용해야함.
+		
+		# 파일 업로드 지원 라이브러리
+		- cos.jar	: multipartRequest 이용 (실습에 사용할 라이브러리) 
+			site : http://www.servlets.com/cos/
+			배치 : WEB-INF > lib 폴더 안에 붙여넣기
+		- commons-filupload.jar / commons-io.jar : 아파치 API
+		
+	4) 파일 업로드 처리
+		request 내장객체만으로는 처리가 불가능함.
+		-> MultipartRequest 를 사용하여 처리.
+
+		* MultipartRequest 객체 생성시, 필요한 인자들.
+		1. request 내장 객체 (jsp에 이미 있다)
+		2. 업로드 될 파일 저장 경로
+		3. 업로드 할 파일 최대 크기
+		4. 인코딩 타입 : UTF-8
+		5. 업로드된 파일 이름이 같을경우, 덮어씌우기 방지 객체
+
+
+2. 회원가입 + 이미지 업로드 추가
+	
+	1) DB 테이블 imgSignup
+	2) DAO, DTO
+	3) 회원가입 form pro
+	4) 로그인 form pro
+	5) 마이페이지
+	6) 수정 form pro
+	7  삭제 form pro
+	
+
+		

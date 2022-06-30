@@ -141,8 +141,16 @@ public class BoardDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setWriter(rs.getString("writer"));
 				dto.setPw(rs.getString("pw"));
-				dto.setReadcount(rs.getInt("readcount"));
 				dto.setReg(rs.getTimestamp("reg"));
+				int readcount = rs.getInt("readcount");
+				
+				//	readcount +1 
+				sql = "update tboard set readcount=? where boardno=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1 , readcount+1);
+				pstmt.setInt(2 , boardno);
+				pstmt.executeUpdate();
+				dto.setReadcount(readcount+1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

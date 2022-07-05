@@ -84,6 +84,119 @@ public class ImgSignupDAO {
 		}
 	
 	
+		
+		
+		
+	//	사용자 id 주면 그 사용자의 photo컬럼값 돌려주는 메서드	
+	public String  getPhoto(String id) {
+		String photo = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			String sql = "select photo from ImgSignup where id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				photo = rs.getString(1); 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null)try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			if(pstmt != null)try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+			if(conn != null)try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+		return photo;
+	}
+
+	
+	
+	
+	//	회원 한명 정보 가져오는 메서드
+	public ImgSignupDTO getMember(String id) {
+		ImgSignupDTO member = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			String sql = "select * from ImgSignup where id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				member = new ImgSignupDTO();
+				member.setId(id); 
+				member.setPw(rs.getString("pw")); 
+				member.setName(rs.getString("name")); 
+				member.setGender(rs.getString("gender")); 
+				member.setEmail(rs.getString("email")); 
+				member.setReg(rs.getTimestamp("reg")); 
+				member.setPhoto(rs.getString("photo")); 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null)try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+			if(pstmt != null)try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+			if(conn != null)try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+		}
+		return member;
+	}
+
+	
+	
+	
+	//	회원 한명 정보 가져오는 메서드
+		public int updateMember(ImgSignupDTO member) {
+			int result = 0;
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				conn = getConnection();
+				String sql = "update ImgSignup set pw=? , email=?, photo=? where id=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, member.getPw() );
+				pstmt.setString(2, member.getEmail());
+				pstmt.setString(3, member.getPhoto());
+				pstmt.setString(4, member.getId());
+				result = pstmt.executeUpdate();		//	잘되면 리턴1, 잘안되면 리턴0
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				if(rs != null)try {rs.close();} catch (SQLException e) {e.printStackTrace();}
+				if(pstmt != null)try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+				if(conn != null)try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+			}
+			return result;
+		}
+	
+	
+	
+		//	회원 탈퇴 처리 메서드
+			public void deleteMember(String id) {
+				Connection conn = null;
+				PreparedStatement pstmt = null;
+				try {
+					conn = getConnection();
+					String sql = "delete from imgSignup where id=?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, id);
+					int result = pstmt.executeUpdate();
+					if(result ==1) {
+						System.out.println("deleteMember = "+result);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally {
+					if(pstmt != null)try {pstmt.close();} catch (SQLException e) {e.printStackTrace();}
+					if(conn != null)try {conn.close();} catch (SQLException e) {e.printStackTrace();}
+				}
+			}
 	
 	
 	
@@ -97,7 +210,15 @@ public class ImgSignupDAO {
 	
 	
 	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 }

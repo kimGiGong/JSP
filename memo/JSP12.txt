@@ -1,0 +1,31 @@
+[JSP12]
+
+1. 게시판 + 파일 업로드 (이미지 게시판)
+
+	- DB 테이블 게시글 imgBoard , 댓글 imgReply
+	- 시퀀스 imgBoard_seq , imgReply_seq
+	- ImgBoardDAO, ImgBoardDTO , ImgReplyDAO, ImgReplyDTO (web.board.model)
+	- 글 작성 writeform / writepro
+	- 글 목록 list
+	- 글 본문 content + 댓글
+	- 글 수정 modifyForm / modifyPro
+	- 글 삭제 deleteForm / deletePro
+
+	
+2. 게시판 + 회원가입 연결
+
+	- 메인 -> 게시판 이동버튼 추가
+	- 게시판쪽에  로그인 / 로그아웃/메인 버튼 추가
+	- 게시판 글작성 -> 로그인 후 가능
+			글작성자는 로그인된 id로
+
+	- 비로그인시, 목록(list)보기만 가능
+		본문내용은 로그인시 읽기가능
+
+	- 본인이 작성한 글만 수정/삭제 가능하게
+	- 관리자로 로그인 후 글 삭제시 비번확인 없이 삭제
+		id : admin
+	- 관리자 로그인시 모든 회원 리스트 확인 가능 
+		회원 리스트 페이지 추가 : memberList.jsp
+		id / 이름으로 목록 검색
+	- 게시판 작성자/내용 검색 기능

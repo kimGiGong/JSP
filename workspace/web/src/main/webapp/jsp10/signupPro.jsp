@@ -28,10 +28,18 @@
 	member.setPw(mr.getParameter("pw"));
 	member.setName(mr.getParameter("name"));
 	member.setGender(mr.getParameter("gender"));
-	member.setEmail(mr.getParameter("email"));
+	if(mr.getParameter("email")==null){
+		member.setEmail("none");
+	}else{
+		member.setEmail(mr.getParameter("email"));
+	}
 	
+	if(mr.getFilesystemName("photo")==null){
+		member.setPhoto("default.png");
+	}else{
 	//	실제 save 폴더에 저장된 파일명을 dto에 담기 (파일명 중복처리되어 저장되므로, 원본이름X)
-	member.setPhoto(mr.getFilesystemName("photo"));
+		member.setPhoto(mr.getFilesystemName("photo"));
+	}
 	
 	//	BD가서 저장해!!!
 	ImgSignupDAO dao = new ImgSignupDAO();

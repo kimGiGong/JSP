@@ -3,37 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>로그아웃</title>
+<meta charset="UTF-8">
+<title>logout.jsp</title>
 </head>
 <%
 	session.invalidate();
-	response.sendRedirect("main.jsp");
 %>
 <body>
+	<script type="text/javascript">
+		alert("로그아웃!!");
+		window.location="main.jsp";
+	</script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

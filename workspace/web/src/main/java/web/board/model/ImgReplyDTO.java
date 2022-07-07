@@ -4,15 +4,14 @@ import java.sql.Timestamp;
 
 public class ImgReplyDTO {
 
-	private int rno;
-	private String reply;
-	private String replyer;
+	private int rno; 
+	private String reply; 
+	private String replyer; 
 	private Timestamp replyReg;
-	private int bno;
+	private int bno; 
 	private int replyGrp;
 	private int replyLevel;
 	private int replyStep;
-	
 	
 	public int getRno() {
 		return rno;

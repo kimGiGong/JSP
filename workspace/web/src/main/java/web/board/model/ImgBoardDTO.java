@@ -3,18 +3,16 @@ package web.board.model;
 import java.sql.Timestamp;
 
 public class ImgBoardDTO {
-	
-	private int bno;	// 게시글 고유번호
-	private String writer;
-	private String subject;
-	private String content;
-	private String img;
-	private String email;
-	private String bpw;
-	private Timestamp reg;
-	private int readcount;
 
-	
+	private int bno;  // 게시글 고유 번호 
+	private String writer; 
+	private String subject;
+	private String content; 
+	private String img;
+	private String email; 
+	private String bpw; 
+	private Timestamp reg; 
+	private int readcount;
 	
 	public int getBno() {
 		return bno;
@@ -71,5 +69,5 @@ public class ImgBoardDTO {
 		this.readcount = readcount;
 	}
 	
-
+	
 }

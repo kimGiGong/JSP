@@ -1,0 +1,283 @@
+[servlet]	web.jsp11.servlet
+
+WAS(Web Application Server)
+= Web Container(dynamic processing)   ->   Thread   
+   ->   Servler( init() , service() , destroy() )   ->   doGet(),doPost()
+
+servlet = java class 로서 html을 java로 변환 해준다.
+웹 브라우저에서 서버에 요청(Request)을 하면 요청에 맞는 동작을 수행하고 
+웹 브라우저에 HTTP형식으로 응답(Response)한다.
+jsp는 html에 java가 들어가는 형식
+
+
+
+
+
+
+
+
+
+
+1. WebServer와 WAS 의 차이  ==  https://gmlwjd9405.github.io/2018/10/27/webserver-vs-was.html
+	1) 웹서버
+		클라이언트로부터 HTTP요청을 받아 정적인(static) 컨텐츠( html, 이미지, css등 )를
+		제공해주는 프로그램 또는 그것이 설치된 하드웨어를 말함
+
+		기능
+		- 정적 컨텐츠 제공 , WAS 거치지 않고 바로 자원 제공
+		- 동적인 컨텐츠 제공을 위한 요청을 컨테이너에게 전달 
+		
+		ex) Apache server, Nginx , IIS 등		
+
+	2) WAS
+		DB 조회나 다양한 로직 처리를 요구하는 동적 컨텐츠 제공하기 위해 만들어진
+		Web Application Server로 미들웨어이다.
+		웹 컨테이너 == 서블릿 컨테이너 라도 부름 ( 자바 기반 웹개발시 )
+	
+		기능 
+		- 프로그램 실행 환경과 DB접속 기능 제공
+		- 여러개의 트랜젝션 관리 기능
+		- 업무 처리하는 비지니스 로직 수행
+
+		ex) Tomcat , JBoss, Jeus, Web Sphere 등
+		
+	
+	* Web Service Architecture
+		- client -> web server -> DB
+		- client -> WAS -> DB
+		- client -> web server -> WAS -> DB
+	
+
+
+
+
+
+	
+2. Servlet
+	JSP 표준이 나오기 전에 만들어진 표준. 자바로 웹어플리케이션 개발 위해 만들어짐.
+	서블릿은 자바 클래스 이용해 개발함
+
+	개발과정
+	1. 서블릿 규약에 따라 자바 코드 작성
+	2. 자바 코드 컴파일 -> 클래스파일 생성
+	3. /WEB-INF/classes 폴더에 클래스 파일을 패키지에 맞게 위치시킴
+	4. web.xml 파일에 서블릿 클래스 설정
+	5. 컨테이너 실행
+	6. 웹 브라우저에서 요청 -> 결과 확인
+
+	1) 서블릿 생성방식 
+		- 이클립스 JavaEE 모드
+		- javax.servlet.httpServlet 클래스 상속
+		- HttpServlet 클래스의 doGet / doPost / service 메서드중
+
+ 처리하고자하는 HTTP method에 따라 알맞는 메서드를 
+오버라이딩 하여 구현해야함.
+
+
+
+
+
+
+
+3. MVC Architecture , MVC 패턴
+
+	M : Model 		: JavaBeans로 DTO, DAO 등 비지니스 로직 처리를 담당
+					( tv 채널 변경처리 , 볼륨처리 …. )
+	V : View		: 보여지는 부분을 담당 HTML이 중심이 되는 JSP 사용
+					( tv 화면 )
+	C : Controller		: Servlet , 요청을 받아 Model 과 View 사이의 흐름 제어
+					( tv 리모컨 )
+
+	MVC 모델1 : MV == JSP ( MVC 도 아니다 )
+	MVC 모델2 : 요청이 Controller로 들어가도록
+
+
+
+
+
+
+
+
+
+[JSP 페이지 구성요소]
+	
+	디렉티브 태그 : <%@ page    %>
+	스크립트 : 스크립트릿 <%	   %>, 출력문 <%=   %> , 선언부 <%!    %>
+	표준액션태그 : <jsp:useBean    />
+	정적인 데이터 : 문자들…
+	내장객체 : request, response, session …
+	표현언어(EL) : ${}
+	커스텀 태그 , JSTL : <c:set   />  <fmt : …. >
+
+4. 표현 언어 Expression Language : EL
+	모든 웹에서 사용되는 웹 언어. 표현에만 초점을 맞춘 언어 -> 대입 개념X
+	출력문을 더 쉽고, 간결하게 도와줌.
+	
+	void메서드 호출X , Get메서드 호출 O , Set메서드 호출 X
+
+	기능
+	JSP 4가지 내장객체가 제공하는 영역의 속성 사용
+	수치 연산, 관계연산, 논리 연산 제공
+	자바 클래스 메서드 호출 기능 제공
+	쿠키 , 내장객체의 속성등 JSP를 위한 표현언어의 내장객체 제공
+
+		EL 구성
+		스크립트 표현식 	: <%=    >		<%= dto.getId() %>
+		EL			: ${  }			${ dto.id }
+
+		문자형 홑/겹 따옴표 구분 없음
+		연산자 
+		: 산술, 논리, 비교 등 존재
+		${ a = 10 } 대입X	${ a == 10 } 비교O
+
+		# 산술연산자 
+		+ -  *
+		/    div		( div 명령어 ) 오류시 명령어로도 사용가능
+		%  mod
+		
+		산술 연산자는 정수와 실수 타입에 대해서만 동작.
+		숫자 + 객체(문자열) -> 숫자로 변환해서 연산 결과 출력
+		null 은 Long타입의 숫자 0으로 연산처리되며,
+		연산없이 단순 null이면 출력을 하지 않는다.
+		Syso( “10” + 10 ) 	->	1010
+		$ { “10” + 10 } 	->	20 출력
+		${ “일” + 10 }		-> 	에러!
+		${ null + 10 }		->	10 출력
+
+		# 비교 연산자
+		== 또는 eq 또는 = 		equals
+		! = 또는 ne			not equals
+		< 또는 lt			less than
+		> 또는 gt			greater than
+		<= 또는 le			less than equals
+		>= 또는 ge			greater than equals
+
+		# 논리 연산자
+		&& 또는 and
+		||    또는 or
+		!    또는 not
+
+		# empty 연산자
+		empty 값/ 변수
+		값이 빈 객체인지 검사할때 주로 사용 (ArrayList 나 배열)
+		값이 null , 빈 문자열 , 길이 0 , 빈 Map, 빈 Collection 객체의 경우 true 리턴
+
+		# 삼항 연산자
+			? : 
+
+		EL 기본 객체
+
+
+		requestScope	request 내부객체
+
+		sessionScope	session 내부객체
+
+		param		요청 파라미터	request.getParameter(“파라미터명”)
+
+		paramValues	String[]	request.getParameterValues(“파라미터명”)
+
+		cookie		쿠키들 request.getCookies() 와 동일
+
+		pageContext	pageContext 내부객체	
+
+		pageScope	page 내부객체
+
+		applicationScope	application 내부객체
+
+		header		헤더정보 가져오기	request.getHeader() 결과와 동일
+
+		headerValues
+
+		initParam		초기화 파라미터 가져올때	application.getInitParameter() 와 동일
+
+		# 객체접근
+		java : <%= session.getAttribute(“memId”) %>  <%= request.getAttribute(“test”) %>
+		el : ${ memId }					${ request.test }
+
+		동일한 속성명이 여러개라면 ….Scope를 적어주기
+		속성명이 유일하거나 구분 가능하다면, 이름만 작성해도 사용가능. (생략가능)
+
+		cookie : ‘ 쿠키이름, Cookie 객체 ’ 의 형태
+			ex. ID라는 쿠키이름의 값을 출력		new Cookie(“cid” , “java”);
+				${ cookie.ID.value }			${ cookie.cid.value } → java 출력
+
+5. JSTL : JSP Standard Tag Library
+	JSP로 만들어진 커스텀 태그 중에서 많이 사용하는 것들을 모아서 
+	JSTL이라는 표준을	 만듬.
+	커스텀 태그 라고도 부르며 EL과 함께 사용된다.
+
+	HTML 코드와 JAVA 코드가 들어가는 JSP 스크립트 태그들이 섞여있으면,
+	가독성 떨어지며 코드 재사용성이 떨어진다.
+	JSTL을 이용하면 스크립트코드에서 적용한 기능을 태그로 만들어 치환가능하다.
+	→ 자바를 태그화
+
+	XML 기반으로 작성되어 시작태그와 종료태그 쌍으로 이루어져 있고,
+	홑태그 /> 마지막에 닫아주어야한다.
+	대소문자 구분
+
+	라이브러리 배치
+		jstl-1.2.jar 다운
+		/WEB-INF/lib 안에 배치
+	JSTL 태그 종류
+		Core 			: 가장 기본적인 태그
+					: 접두어 c : http://java.sun.com/jsp/jstl/core
+
+		국제화		: 포매팅 , 숫자나 날짜 관련 태그
+					: 접두어 fmt : http://java.sun.com/jsp/jstl/fmt
+
+	—-----아래 자주사용안함	
+		XML			: xml에서 사용하기위해 만들어졌으나, 이제 사용안함
+		데이터베이스	: DB관련 태그, 우리는 사용안함 → DAO에서 처리
+		함수			: 함수 처리. 사용 안함. 모든 연산은 MVC패턴 따라 Model 처리
+
+	<%@ page		
+
+	<%@ include		
+
+	<%@ taglib
+
+	Core 태그
+		: Attribute 변수 선언, 삭제 등 변수 관련 작업과
+		if, for 같은 제어문 , url 처리등에 사용
+
+
+
+
+	# core 태그 선언
+		: core 태그를 현 jsp파일에서 사용하겠다고 선언해줘야 사용가능
+
+		<%@ taglib prefix=”접두어” uri=”태그 라이브러리 경로” %>
+	
+		<%@ taglib prefix=”c” uri = “http://java.sun.com/jsp/jstl/core” %>
+
+		prefix : 접두어 설정
+		uri : 라이브러리 uri. 고정값
+
+	# core 태그 종류
+		변수관련		set		변수 선언
+				remove	설정한 변수 삭제
+		흐름제어		if		조건문
+				choose	switch 와 비슷
+				forEach	반복문
+		URL관련		import 	include와 비슷.
+						url을 사용하여 다른 자원 결과 삽입
+				redirect	지정한 경로로 리다이렉트
+				url		url 만들기
+		기타		catch		예외처리 사용 (우리는 X)
+				out		출력 ${ } 써도 되지만 , el보다 보안에 좋다
+
+	#1. c:set
+		# 변수 설정
+		<c:set var”변수명” value=”값” />
+		<c:set var”변수명” value=”값” >or값<c:set>
+
+		value : 스크립트표현식, EL, 정적텍스트 사용해 값 지정가능
+
+		# 프로퍼티 설정
+		<c:set target=”대상” property=”프로퍼티명” value=”값” />
+		<c:set target=”대상” property=”프로퍼티명” value=”값” />값</c:set>
+
+		target : 값 설정할 대상 객체.  표현식 <%= %>이나 EL 사용
+		property : 프로퍼티 이름지정. 자바빈이 target이면 변수명 기술
+		value : 프로퍼티 값 지정
+

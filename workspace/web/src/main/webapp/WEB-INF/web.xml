@@ -31,6 +31,20 @@
 	</error-page>
 	-->
 	
+	<servlet>
+		<servlet-name>mvc</servlet-name>
+		<servlet-class>web.jsp11.servlet.HomeController</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+			<servlet-name>mvc</servlet-name>
+			<!-- http://localhost:8080/web/hello.do -->
+			<url-pattern>*.do</url-pattern>	
+	</servlet-mapping>
+	
+	
+	
+	
 	
 	
 	

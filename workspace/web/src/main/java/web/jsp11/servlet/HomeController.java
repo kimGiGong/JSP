@@ -30,16 +30,13 @@ public class HomeController extends HttpServlet {
 		//	WEB-INF -> web.xml 설정
 		
 		
-		request.setAttribute("num", 1111);
-		request.setAttribute("name", "hihihi");
+		request.setAttribute("day", new java.util.Date());
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("memId", "java");
 		
 		
 		
 		// 	view (jsp 파일)을 지정해서 응답하라고 시키기
-		RequestDispatcher rd =  request.getRequestDispatcher("/jsp11/home.jsp");
+		RequestDispatcher rd =  request.getRequestDispatcher("/jsp11/jstl02.jsp");
 		rd.forward(request, response);
 	}
 		

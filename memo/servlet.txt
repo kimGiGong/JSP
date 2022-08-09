@@ -99,7 +99,7 @@ jsp는 html에 java가 들어가는 형식
 
 
 
-[JSP 페이지 구성요소]
+	[JSP 페이지 구성요소]
 	
 	디렉티브 태그 : <%@ page    %>
 	스크립트 : 스크립트릿 <%	   %>, 출력문 <%=   %> , 선언부 <%!    %>
@@ -121,12 +121,12 @@ jsp는 html에 java가 들어가는 형식
 	자바 클래스 메서드 호출 기능 제공
 	쿠키 , 내장객체의 속성등 JSP를 위한 표현언어의 내장객체 제공
 
-		EL 구성
+	1) EL 구성
 		스크립트 표현식 	: <%=    >		<%= dto.getId() %>
 		EL			: ${  }			${ dto.id }
 
 		문자형 홑/겹 따옴표 구분 없음
-		연산자 
+	2) 연산자 
 		: 산술, 논리, 비교 등 존재
 		${ a = 10 } 대입X	${ a == 10 } 비교O
 
@@ -134,7 +134,7 @@ jsp는 html에 java가 들어가는 형식
 		+ -  *
 		/    div		( div 명령어 ) 오류시 명령어로도 사용가능
 		%  mod
-		
+	
 		산술 연산자는 정수와 실수 타입에 대해서만 동작.
 		숫자 + 객체(문자열) -> 숫자로 변환해서 연산 결과 출력
 		null 은 Long타입의 숫자 0으로 연산처리되며,
@@ -156,7 +156,7 @@ jsp는 html에 java가 들어가는 형식
 		&& 또는 and
 		||    또는 or
 		!    또는 not
-
+	
 		# empty 연산자
 		empty 값/ 변수
 		값이 빈 객체인지 검사할때 주로 사용 (ArrayList 나 배열)
@@ -165,7 +165,7 @@ jsp는 html에 java가 들어가는 형식
 		# 삼항 연산자
 			? : 
 
-		EL 기본 객체
+	3) EL 기본 객체
 
 
 		requestScope	request 내부객체
@@ -194,10 +194,10 @@ jsp는 html에 java가 들어가는 형식
 		java : <%= session.getAttribute(“memId”) %>  <%= request.getAttribute(“test”) %>
 		el : ${ memId }					${ request.test }
 
-		동일한 속성명이 여러개라면 ….Scope를 적어주기
-		속성명이 유일하거나 구분 가능하다면, 이름만 작성해도 사용가능. (생략가능)
+		• 동일한 속성명이 여러개라면 ….Scope를 적어주기
+			속성명이 유일하거나 구분 가능하다면, 이름만 작성해도 사용가능. (생략가능)
 
-		cookie : ‘ 쿠키이름, Cookie 객체 ’ 의 형태
+		• cookie : ‘ 쿠키이름, Cookie 객체 ’ 의 형태
 			ex. ID라는 쿠키이름의 값을 출력		new Cookie(“cid” , “java”);
 				${ cookie.ID.value }			${ cookie.cid.value } → java 출력
 
@@ -215,10 +215,10 @@ jsp는 html에 java가 들어가는 형식
 	홑태그 /> 마지막에 닫아주어야한다.
 	대소문자 구분
 
-	라이브러리 배치
+	1) 라이브러리 배치
 		jstl-1.2.jar 다운
 		/WEB-INF/lib 안에 배치
-	JSTL 태그 종류
+	2) JSTL 태그 종류
 		Core 			: 가장 기본적인 태그
 					: 접두어 c : http://java.sun.com/jsp/jstl/core
 
@@ -230,54 +230,142 @@ jsp는 html에 java가 들어가는 형식
 		데이터베이스	: DB관련 태그, 우리는 사용안함 → DAO에서 처리
 		함수			: 함수 처리. 사용 안함. 모든 연산은 MVC패턴 따라 Model 처리
 
-	<%@ page		
+		<%@ page		
 
-	<%@ include		
+		<%@ include		
 
-	<%@ taglib
+		<%@ taglib
 
-	Core 태그
+	3) Core 태그
 		: Attribute 변수 선언, 삭제 등 변수 관련 작업과
 		if, for 같은 제어문 , url 처리등에 사용
 
 
 
 
-	# core 태그 선언
-		: core 태그를 현 jsp파일에서 사용하겠다고 선언해줘야 사용가능
-
-		<%@ taglib prefix=”접두어” uri=”태그 라이브러리 경로” %>
+		# core 태그 선언
+			: core 태그를 현 jsp파일에서 사용하겠다고 선언해줘야 사용가능
 	
-		<%@ taglib prefix=”c” uri = “http://java.sun.com/jsp/jstl/core” %>
+			<%@ taglib prefix=”접두어” uri=”태그 라이브러리 경로” %>
+	
+			<%@ taglib prefix=”c” uri = “http://java.sun.com/jsp/jstl/core” %>
 
-		prefix : 접두어 설정
-		uri : 라이브러리 uri. 고정값
+			prefix : 접두어 설정
+			uri : 라이브러리 uri. 고정값
 
-	# core 태그 종류
-		변수관련		set		변수 선언
-				remove	설정한 변수 삭제
-		흐름제어		if		조건문
-				choose	switch 와 비슷
-				forEach	반복문
-		URL관련		import 	include와 비슷.
+		# core 태그 종류
+			변수관련		set		변수 선언
+					remove	설정한 변수 삭제
+			흐름제어		if		조건문
+					choose	switch 와 비슷
+					forEach	반복문
+			URL관련		import 	include와 비슷.
 						url을 사용하여 다른 자원 결과 삽입
-				redirect	지정한 경로로 리다이렉트
-				url		url 만들기
-		기타		catch		예외처리 사용 (우리는 X)
-				out		출력 ${ } 써도 되지만 , el보다 보안에 좋다
+					redirect	지정한 경로로 리다이렉트
+					url		url 만들기
+			기타		catch		예외처리 사용 (우리는 X)
+					out		출력 ${ } 써도 되지만 , el보다 보안에 좋다
 
-	#1. c:set
-		# 변수 설정
-		<c:set var”변수명” value=”값” />
-		<c:set var”변수명” value=”값” >or값<c:set>
+		#1. c:set
+			# 변수 설정
+			<c:set var”변수명” value=”값” />
+			<c:set var”변수명” value=”값” >or값<c:set>
 
-		value : 스크립트표현식, EL, 정적텍스트 사용해 값 지정가능
+			value : 스크립트표현식, EL, 정적텍스트 사용해 값 지정가능
 
-		# 프로퍼티 설정
-		<c:set target=”대상” property=”프로퍼티명” value=”값” />
-		<c:set target=”대상” property=”프로퍼티명” value=”값” />값</c:set>
+			# 프로퍼티 설정
+			<c:set target=”대상” property=”프로퍼티명” value=”값” />
+			<c:set target=”대상” property=”프로퍼티명” value=”값” />값</c:set>
+	
+			target : 값 설정할 대상 객체.  표현식 <%= %>이나 EL 사용
+			property : 프로퍼티 이름지정. 자바빈이 target이면 변수명 기술
+			value : 프로퍼티 값 지정
 
-		target : 값 설정할 대상 객체.  표현식 <%= %>이나 EL 사용
-		property : 프로퍼티 이름지정. 자바빈이 target이면 변수명 기술
-		value : 프로퍼티 값 지정
+		#2. c:remove	변수 삭제
 
+
+		#3. c:if		조건문
+
+			< c:if test= ”조건EL” >
+	
+			</ c:if >
+
+			test : 속성값은 표현식, EL, 문자열 사용가능.
+
+		#4. c:choose, c:when, c:otherwise
+
+			<c:choose>
+			<c:when test=”조건EL”>
+				……
+			</c:when>
+			<c:when test=”조건EL”>
+				……
+			</c:when>
+			<c:otherwise>
+				……
+			</c:otherwise>
+			</c:choose>
+
+		#5. c:forEach	반복문
+
+			#1. 자바 업그레이드 for문 처럼 사용	for(int a : arr) 
+			<c:forEach var=”변수” items=”아이템EL(배열)” varStatus=”status”>
+				……
+				${변수}
+				${status.varStatus속성명}
+				……
+			</c:forEach>
+	
+			# varStatus속성 : 루프(반복) 정보를 담는 변수로 사용.
+				.index : 실행중인 현재 index번호	0, 1, 2…..
+				.count	: 루프 현재 실행 횟수 1, 2, 3……
+				.begin	: begin 속성값
+				.end	: end 속성값
+				.step	: step 속성값
+				.first	: 현재 실행이 첫번째 실행인 경우 true
+				.last	: 현재 실행이 마지막 실행인 경우 true
+				.current : 컬렉션 중 현재 루프에서 사용할 객체
+
+
+			# 자바 일반 for문 처럼 사용	for(int i =0 ; i<=10 ; i++)
+			<c:forEach var=”변수” begin=”시작값” end=”종료값(포함)” step=”건너뛸값” >
+				……
+				${변수}
+				……
+			</c:forEach>
+			<c:forEach var=” i ” begin=”0” end=”10” step=”1” >
+
+		#6. import (include와 비슷)
+			<c:import var="변수명" url="경로" />
+				${ 변수명 } 으로 보여주기
+
+		#7. c:url	url생성
+			<c:url value=”경로”>
+				<c:param name=”파라미터명” value=”파라미터값” />
+			</c:url>
+
+			value : 경로는 절대경로와 상대경로 사용가능
+
+		#8. c:redirect	단순 페이지 이동
+			<c:redirect url =”경로” />
+
+		#9. c:out		출력
+			<c:out value=”출력할값EL” />
+
+
+	4) 국제화 : fmt
+		특정 지역에 맞게 출력하거나, 숫자/날짜 관련된 태그 묶음
+
+		#fmt 태그 선언
+			<%@ taglib prefix=”fmt” uri=”http://java.sun.com/jsp/jstl/fmt” />
+
+		# 종류
+		로케일 지정	setLocale		: locale 지정
+				requestEncoding	: 요청 파라미터 캐릭터셋(인코딩) 지정
+		숫자,날짜		formatDate	: Date 객체 포맷팅
+				parseDate	: 문자열로 표시된 날짜를 
+							분석해 Date객체로 변환
+				formatNumber	: 숫자 포맷팅
+				parseNumber	: 문자열로 표시된 날짜를 분석해 숫자로 변환
+				setTimeZone	: 시간대 정보 특정 변수에 저장
+				timeZone		: 시간대 지정
